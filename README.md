@@ -16,13 +16,7 @@ An ecommerce store built with MERN stack, and utilizes third party API's. This e
   * React for displaying UI components
   * Redux to manage application's state
   * Redux Thunk middleware to handle asynchronous redux actions
-
-
-## What's Next 
-
-  * Add a payment method solution to enable checkout and collecting payments
-  * Associate each Merchant to a payment account 
-
+  * Stripe payment gateway
 
 ## Install
 

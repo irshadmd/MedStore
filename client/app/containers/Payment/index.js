@@ -1,6 +1,6 @@
 /*
  *
- * OrderSuccess
+ * Payment
  *
  */
 
@@ -14,46 +14,69 @@ import actions from '../../actions';
 import NotFound from '../../components/Common/NotFound';
 import LoadingIndicator from '../../components/Common/LoadingIndicator';
 
-class OrderSuccess extends React.PureComponent {
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "./CheckoutForm";
+
+import AddressList from '../../components/Manager/AddressList';
+import CartSummary from '../../components/Store/CartSummary';
+
+const promise = loadStripe(process.env.STRIPE_API_KEY);
+
+
+class Payment extends React.PureComponent {
+
   componentDidMount() {
-    const id = this.props.match.params.id;
-    this.props.fetchOrder(id);
+    this.props.fetchAddresses();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      const id = this.props.match.params.id;
-      this.props.fetchOrder(id);
-    }
-  }
 
   render() {
-    const { order, isLoading } = this.props;
-
+    console.log(addresses);
+    const { history, addresses, cartItems, cartTotal } = this.props;
     return (
       <div className='order-success'>
-        {isLoading ? (
-          <LoadingIndicator />
-        ) : order._id ? (
-          <div className='order-message'>
-            <h2>Thank you for your order.</h2>
-            <p>
-              Order #<span className='order-label'>{order._id}</span> is
-              complete.
-            </p>
-            <p>A confirmation email will be sent to you shortly.</p>
-            <div className='order-success-actions'>
-              <Link to='/dashboard/orders' className='btn-link'>
-                Manage Orders
-              </Link>
-              <Link to='/shop' className='btn-link shopping-btn'>
-                Continue Shopping
-              </Link>
+        <div className='order-message'>
+          <h2>Checkout.</h2>
+          <br></br>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div style={{ textAlign: "center" }}>
+                      {addresses.length > 0 ? (
+                        <AddressList addresses={addresses} />
+                      ) : (
+                        <NotFound message='No Addresses Found!' />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-md-12" style={{ backgroundColor: '#f2f5f8', borderRadius: "20px", paddingTop: "20px" }}>
+                    {cartItems.length > 0 && (
+                      <div className='cart-checkout'>
+                        <CartSummary cartTotal={cartTotal} />
+                      </div>
+                    )}
+
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-1"><br></br></div>
+              {cartTotal !== 0 ?
+                <div className="col-md-4" >
+                  <div style={{ textAlign: "center", backgroundColor: '#f2f5f8', borderRadius: "20px", padding: "4%" }}>
+                    <p>Enter Card details</p>
+                    <Elements stripe={promise}>
+                      <CheckoutForm total={cartTotal} />
+                    </Elements>
+                  </div>
+                </div>
+                : <span></span>}
             </div>
           </div>
-        ) : (
-          <NotFound message='No order found.' />
-        )}
+        </div>
+
       </div>
     );
   }
@@ -61,9 +84,10 @@ class OrderSuccess extends React.PureComponent {
 
 const mapStateToProps = state => {
   return {
-    order: state.order.order,
-    isLoading: state.order.isLoading
+    addresses: state.address.addresses,
+    cartItems: state.cart.cartItems,
+    cartTotal: state.cart.cartTotal
   };
 };
 
-export default connect(mapStateToProps, actions)(OrderSuccess);
+export default connect(mapStateToProps, actions)(Payment);

@@ -32,6 +32,8 @@
   },
   "homepage": "",
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.15.0",
     "aws-sdk": "^2.799.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
@@ -71,6 +73,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "simple-line-icons": "^2.4.1",
+    "stripe": "^8.149.0",
     "validatorjs": "^3.18.1"
   },
   "devDependencies": {

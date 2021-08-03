@@ -35,6 +35,7 @@ import AuthSuccess from '../AuthSuccess';
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
 import PaymentFailed from '../PaymentFailed';
+import Payment from '../Payment';
 
 class Application extends React.PureComponent {
   componentDidMount() {
@@ -77,6 +78,7 @@ class Application extends React.PureComponent {
                 <Route path='/product/:slug' component={ProductPage} />
                 <Route path='/order/success/:id' component={OrderSuccess} />
                 <Route path='/order/failed' component={PaymentFailed} />
+                <Route path='/payment' component={Payment} />
                 <Route path='/order/:id' component={OrderPage} />
                 <Route path='/login' component={Login} />
                 <Route path='/register' component={Signup} />

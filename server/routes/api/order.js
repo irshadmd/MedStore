@@ -9,6 +9,8 @@ const auth = require('../../middleware/auth');
 const mailgun = require('../../services/mailgun');
 const taxConfig = require('../../config/tax');
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 router.post('/add', auth, async (req, res) => {
   try {
     const cart = req.body.cartId;
@@ -52,6 +54,19 @@ router.post('/add', auth, async (req, res) => {
       error: 'Your request could not be processed. Please try again.'
     });
   }
+});
+
+router.post("/create-payment-intent", async (req, res) => {
+  const { total } = req.body;
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: total,
+    currency: "USD",
+    description: 'MedStore Customer',
+  });
+  res.send({
+    clientSecret: paymentIntent.client_secret
+  });
 });
 
 // fetch all orders api

@@ -10,7 +10,7 @@ const UserSchema = new Schema({
       return this.provider !== 'email' ? false : true;
     }
   },
-  phoneNumber:{
+  phoneNumber: {
     type: String
   },
   firstName: {
@@ -34,11 +34,11 @@ const UserSchema = new Schema({
   },
   googleId: {
     type: String,
-    unique: true
+    unique: false
   },
   facebookId: {
     type: String,
-    unique: true
+    unique: false
   },
   avatar: {
     type: String

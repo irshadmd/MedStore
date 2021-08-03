@@ -137,7 +137,7 @@ export const addOrder = () => {
   };
 };
 
-export const placeOrder = () => {
+export const processOrder = () => {
   return (dispatch, getState) => {
     const token = localStorage.getItem('token');
 
@@ -149,6 +149,16 @@ export const placeOrder = () => {
       });
     }
 
+    // dispatch(toggleCart());
+  };
+};
+
+export const placeOrder = () => {
+  return (dispatch, getState) => {
+    const token = localStorage.getItem('token');
+
+    const cartItems = getState().cart.cartItems;
+    dispatch(push(`/payment`));
     dispatch(toggleCart());
   };
 };
